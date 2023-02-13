@@ -1,4 +1,4 @@
-import LogoHub from "../../assets/LOgo.png"
+import LogoHub from "../../assets/Logo.png"
 import PlusHub from "../../assets/Plus.png"
 import{Conteiner, ButtonReturn, ConteinerHeader, DivConteiner, DivTecnologia} from "./styled"
 import { useNavigate } from "react-router-dom"
