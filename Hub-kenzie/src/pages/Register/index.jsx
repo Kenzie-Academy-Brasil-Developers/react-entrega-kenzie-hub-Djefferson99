@@ -5,38 +5,44 @@ import {useForm} from "react-hook-form"
 import {yupResolver} from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import { useState } from "react"
-import axios from "axios"
+import { Api } from "../../Api/axios"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export function Register(){
     const {selectModulo} = useState()
 
-    const onSubmitHandle = (data) => {
-        let register = {
-            "email": data.email,
-            "password": data.password,
-            "name": data.name,
-            "bio": data.bio,
-            "contact": data.contact,
-            "course_module": data.modulo
+
+
+        async function onSubmitHandle(data){
+            
+            let register = {
+                "email": data.email,
+                "password": data.password,
+                "name": data.name,
+                "bio": data.bio,
+                "contact": data.contact,
+                "course_module": data.modulo
+            }
+            
+            
+            try{
+                const res = await Api.post("https://kenziehub.herokuapp.com/users", register);            
+            
+                res.data
+                toast("Cadastrado com sucesso!")
+                setTimeout(() => {
+                    navegate("/")
+                }, 3000);
+            }catch(err){
+                console.log(err)
+                toast("Erro no cadastro")
+            }
+            
         }
 
-        axios.post("https://kenziehub.herokuapp.com/users", register)
-        .then((res)=>{
-            res.data
-            toast("Cadastrado com sucesso!")
-            setTimeout(() => {
-                navegate("/")
-            }, 3000);
-        }
-        )
-        .catch((err)=>{
-            console.log(err)
-            toast("Erro no cadastro")
-        } 
-        )
-    }
+    
+    
     const formVerification = yup.object().shape({
         name: yup.string().required("Nome obrigatório"),
         email: yup.string().required("Email obrigatório").email("Email inválido"),

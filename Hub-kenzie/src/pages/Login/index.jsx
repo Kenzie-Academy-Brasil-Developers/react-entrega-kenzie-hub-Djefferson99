@@ -4,7 +4,8 @@ import {Conteiner,InputConteiner,ButtonEntrar,ButtonCadastrar, SpanVerifi } from
 import {useForm} from "react-hook-form"
 import {yupResolver} from "@hookform/resolvers/yup"
 import * as yup from "yup"
-import axios from "axios"
+import { Api } from "../../Api/axios"
+
 
 export function Login(){
 
@@ -16,19 +17,20 @@ export function Login(){
         navegate("/register")
     }
 
-    const onSubmitHandle = (data) => {
-
-        axios.post("https://kenziehub.herokuapp.com/sessions",{...data})
-        .then((res)=> { 
-           
-            window.localStorage.clear(),
-            window.localStorage.setItem("@TOKEN", res.data.token),
-            window.localStorage.setItem("@NAME", res.data.user.name),
-            window.localStorage.setItem("@MODULO", res.data.user.course_module),   
-            navegate("/landing") 
-        })
-        .catch((err)=> console.log(err))
-    }
+  
+        async function onSubmitHandle(data){
+            try{
+                const res = await Api.post("https://kenziehub.herokuapp.com/sessions",{...data});            
+            
+                window.localStorage.clear(),
+                window.localStorage.setItem("@TOKEN", res.data.token),
+                window.localStorage.setItem("@USERID", res.data.user.id),
+                navegate("/landing") 
+            }catch(error){
+                console.log(error)
+            }
+            
+        }
 
     const formVerification = yup.object().shape({
         email: yup.string().required("Email obrigatório").email("Email inválido"),
