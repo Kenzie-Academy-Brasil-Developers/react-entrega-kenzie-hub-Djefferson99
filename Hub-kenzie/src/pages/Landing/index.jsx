@@ -3,10 +3,10 @@ import PlusHub from "../../assets/Plus.png"
 import{Conteiner, ButtonReturn, ConteinerHeader, DivConteiner, DivTecnologia} from "./styled"
 import { useNavigate } from "react-router-dom"
 import { Api } from "../../Api/axios"
-import { useEffect, useState } from "react"
+import { useEffect,  useState } from "react"
 
 export  function Landing(){
-     const [user, setUser] = useState([])
+    const [user, setUser] = useState([])
          
         async function profile(){
             try{

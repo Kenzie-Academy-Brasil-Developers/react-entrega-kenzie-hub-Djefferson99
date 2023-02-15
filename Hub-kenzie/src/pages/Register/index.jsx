@@ -3,56 +3,13 @@ import { useNavigate } from "react-router-dom"
 import { Conteiner, ButtonReturn, InputConteiner, SelectConteiner, ButtonCadastrar ,SpanVerifi } from "./styled"
 import {useForm} from "react-hook-form"
 import {yupResolver} from "@hookform/resolvers/yup"
-import * as yup from "yup"
-import { useState } from "react"
-import { Api } from "../../Api/axios"
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { onSubmitHandle } from "../../Componets/RegisterApi/index.jsx";
+import {formVerification} from "../../Componets/Verification/index.jsx"
 
-export function Register(){
-    const {selectModulo} = useState()
-
-
-
-        async function onSubmitHandle(data){
-            
-            let register = {
-                "email": data.email,
-                "password": data.password,
-                "name": data.name,
-                "bio": data.bio,
-                "contact": data.contact,
-                "course_module": data.modulo
-            }
-            
-            
-            try{
-                const res = await Api.post("https://kenziehub.herokuapp.com/users", register);            
-            
-                res.data
-                toast("Cadastrado com sucesso!")
-                setTimeout(() => {
-                    navegate("/")
-                }, 3000);
-            }catch(err){
-                console.log(err)
-                toast("Erro no cadastro")
-            }
-            
-        }
-
-    
-    
-    const formVerification = yup.object().shape({
-        name: yup.string().required("Nome obrigatório"),
-        email: yup.string().required("Email obrigatório").email("Email inválido"),
-        password: yup.string().required("Senha obrigatória").min(6,"Deve ter pelo menos 6 caracteres"),
-        password2: yup.string().required('Confirmação obrigatória').oneOf([yup.ref("password")], 'Senhas não conferem'),
-        bio: yup.string().required("Bio obrigatória"),
-        contact: yup.string().required("Contato obrigatório"),
-        modulo: yup.string().required("Módulo obrigatório")
-        
-    })
+export function Register({selectModulo}){
+ 
     const {register, handleSubmit, formState:{errors}} = useForm({
         resolver: yupResolver(formVerification)
     })   

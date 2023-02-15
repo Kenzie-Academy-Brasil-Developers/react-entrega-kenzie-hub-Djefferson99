@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import {Conteiner,InputConteiner,ButtonEntrar,ButtonCadastrar, SpanVerifi } from "./styled"
 import {useForm} from "react-hook-form"
 import {yupResolver} from "@hookform/resolvers/yup"
-import * as yup from "yup"
+import { formVerificationLogin } from "../../Componets/Verification"
 import { Api } from "../../Api/axios"
 
 
@@ -32,13 +32,9 @@ export function Login(){
             
         }
 
-    const formVerification = yup.object().shape({
-        email: yup.string().required("Email obrigatório").email("Email inválido"),
-        password: yup.string().required("Senha obrigatória")
-    })
 
     const {register , handleSubmit, formState:{errors}} = useForm({
-        resolver: yupResolver(formVerification)
+        resolver: yupResolver(formVerificationLogin)
     })
 
     return(
