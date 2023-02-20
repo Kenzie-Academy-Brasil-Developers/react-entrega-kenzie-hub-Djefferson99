@@ -1,17 +1,25 @@
-import { onSubmitHandle } from "../../Componets/RegisterApi/index.jsx";
 import {formVerification} from "../../Componets/Verification/index.jsx";
 import {useForm} from "react-hook-form"
 import {yupResolver} from "@hookform/resolvers/yup"
 import {InputConteiner, SelectConteiner, ButtonCadastrar ,SpanVerifi } from "./styled"
+import { useContext } from "react";
+import { UserContext } from "../../Providers/UseContext.jsx";
 
 export function FormRegister({selectModulo}){
 
-    const {register, handleSubmit, formState:{errors}} = useForm({
+    const {userResgister} = useContext(UserContext)
+
+    const {register, handleSubmit, formState:{errors}, reset} = useForm({
         resolver: yupResolver(formVerification)
     })   
 
+    const submit = (formData)=>{
+        userResgister(formData);
+        reset()
+    }
+
     return(
-        <form onSubmit={handleSubmit(onSubmitHandle)}>
+        <form onSubmit={handleSubmit(submit)}>
             <h2>Crie sua conta</h2>
             <p>Rapido e grátis, vamos nessa</p>
             <InputConteiner>

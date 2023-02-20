@@ -1,31 +1,12 @@
-import PlusHub from "../../assets/Plus.png"
-import { Api } from "../../Api/axios"
-import { useEffect } from "react"
-import { DivConteiner, DivTecnologia} from"./styled"
-export function Main({user, setUser}){
-    
-         
-    async function profile(){
-        try{
-            const getToken = localStorage.getItem("@TOKEN")
-            const getId = localStorage.getItem("@USERID")
+import { DivConteiner} from"./styled"
+import { useContext } from "react";
+import { UserContext } from "../../Providers/UseContext.jsx";
+import { ListTechnology } from "../ListTechnology/index";
 
-            const config = {
-                headers:{
-                    "Authorization": `Bearer ${getToken}`
-                }   
-            }
-            const res = await Api.get(`https://kenziehub.herokuapp.com/users/${getId}`, config ) 
-             setUser(res.data)
-        }catch(error){
-            console.log(error)
-        }  
-    }
+export function Main(){
     
-    useEffect(()=>{
-        profile()
-    },[])
-
+    const {user} = useContext(UserContext)
+  
     return(
         <main>  
             <DivConteiner> 
@@ -34,13 +15,7 @@ export function Main({user, setUser}){
                     <p>{user.course_module}</p>
                 </div> 
             </DivConteiner>       
-            <DivTecnologia>
-                <h2>Tecnologias</h2>
-                <img src={PlusHub} alt="Botão de adicionar tecnologia" />
-            </DivTecnologia>
-            <ul>
-                <li></li>
-            </ul>
+            <ListTechnology/>
         </main>
     )
 }

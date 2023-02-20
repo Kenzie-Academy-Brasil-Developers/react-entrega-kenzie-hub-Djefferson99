@@ -19,16 +19,3 @@ export const DivConteiner = styled.div`
         }
     }
 `;
-export const DivTecnologia = styled.div`
-    display: flex;
-    flex-direction:row;
-    justify-content: space-between;
-    align-items: center;
-    width: 90vw;
-    margin: 0 auto;
-    margin-top: 20px;
-    @media(min-width:700px){
-        max-width: 800px;
-        
-    }
-`;

@@ -1,12 +1,12 @@
 import {useForm} from "react-hook-form"
 import {yupResolver} from "@hookform/resolvers/yup"
 import { formVerificationLogin } from "../../Componets/Verification"
-import { Api } from "../../Api/axios"
 import { useNavigate } from "react-router-dom"
 import {InputConteiner,ButtonEntrar,ButtonCadastrar, SpanVerifi } from "./styled"
+import { useContext } from "react";
+import { UserContext } from "../../Providers/UseContext.jsx";
 
 export function FormLogin(){
-
 
     const navegate = useNavigate()
 
@@ -16,29 +16,20 @@ export function FormLogin(){
         navegate("/register")
     }
 
+    const {userLogin} = useContext(UserContext)
 
-    async function onSubmitHandle(data){
-        try{
-            const res = await Api.post("https://kenziehub.herokuapp.com/sessions",{...data});            
-            
-            window.localStorage.clear(),
-            window.localStorage.setItem("@TOKEN", res.data.token),
-            window.localStorage.setItem("@USERID", res.data.user.id),
-            navegate("/landing") 
-        }catch(error){
-            console.log(error)
-        }
-            
-    }
-
-
-    const {register , handleSubmit, formState:{errors}} = useForm({
+    const {register , handleSubmit, formState:{errors}, reset} = useForm({
         resolver: yupResolver(formVerificationLogin)
     })
 
+    const submit = (formData)=>{
+        userLogin(formData);
+        reset()
+    }
+
 
     return(
-        <form onSubmit={handleSubmit(onSubmitHandle)}>
+        <form onSubmit={handleSubmit(submit)}>
             <h2>Login</h2>
             <InputConteiner>
                 <label htmlFor="email">Email</label>

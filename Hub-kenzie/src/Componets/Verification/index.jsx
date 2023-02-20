@@ -17,3 +17,8 @@ export const formVerificationLogin = yup.object().shape({
     email: yup.string().required("Email obrigatório").email("Email inválido"),
     password: yup.string().required("Senha obrigatória")
 })
+
+export const formVerificationTechRegister = yup.object().shape({
+    title:yup.string().required("Nome obrigatório"),
+    status:yup.string().required("Status obrigatório")
+})

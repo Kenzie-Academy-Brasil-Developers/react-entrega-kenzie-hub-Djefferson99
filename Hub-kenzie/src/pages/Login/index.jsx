@@ -4,8 +4,6 @@ import { FormLogin } from "../../Componets/FormLogin"
 
 export function Login(){
 
- 
-
     return(
         <Conteiner>
             <header>
