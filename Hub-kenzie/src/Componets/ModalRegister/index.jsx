@@ -5,12 +5,12 @@ import { SpanVerifi, DialogModal, ConteinerModal, Fechar } from "./styled"
 import {TechContext} from "../../Providers/TechContext"
 import { useContext } from "react";
 
-export function Modal(){
+export function ModalRegister(){
     
     const {techResgister} = useContext(TechContext)
 
     const closeModal = ()=>{
-        ModalRegister.close()
+        ModalRegisterId.close()
     }
     
     const {register , handleSubmit, formState:{errors}, reset} = useForm({
@@ -20,11 +20,11 @@ export function Modal(){
     const submit =(formData)=>{
         techResgister(formData)
         reset()
-        ModalRegister.close()
+        ModalRegisterId.close()
     }
 
     return(
-        <DialogModal id="ModalRegister">
+        <DialogModal id="ModalRegisterId">
             <ConteinerModal>
                 <header>
                     <h3>Cadastrar Tecnologia</h3>

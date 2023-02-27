@@ -5,12 +5,16 @@ import { UserContext } from "../../Providers/UseContext.jsx";
 
 const ProtectedRoutes = ()=>{
     const {user} = useContext(UserContext)
-    
+    const userId = localStorage.getItem("@USERID")
+
     const navigate = useNavigate()
     
     useEffect(()=>{
         if(!user){
             navigate("/")
+        }
+        if(userId){
+            navigate("/landing")
         }
     },[])
     return(

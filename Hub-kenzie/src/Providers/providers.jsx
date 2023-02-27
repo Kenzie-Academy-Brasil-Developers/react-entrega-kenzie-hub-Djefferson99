@@ -5,9 +5,7 @@ import { UserProvider } from "./UseContext";
 const Providers = ({children})=>{
     return(
         <UserProvider>
-            <TechProvider>
-                {children}
-            </TechProvider>
+            {children}
         </UserProvider>
         
     )

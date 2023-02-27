@@ -1,8 +1,8 @@
 import Logo from "../../assets/Logo.png"
 import { useNavigate } from "react-router-dom"
 import { Conteiner, ButtonReturn } from "./styled"
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {FormRegister} from "../../Componets/FormRegister/index"
 
 export function Register({selectModulo}){

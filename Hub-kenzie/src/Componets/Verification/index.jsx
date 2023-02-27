@@ -19,6 +19,5 @@ export const formVerificationLogin = yup.object().shape({
 })
 
 export const formVerificationTechRegister = yup.object().shape({
-    title:yup.string().required("Nome obrigatório"),
     status:yup.string().required("Status obrigatório")
 })

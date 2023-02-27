@@ -1,12 +1,30 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { Api } from "../Api/axios";
-import {toast} from 'react-toastify';
+import {toast} from "react-toastify";
 import { useNavigate } from "react-router-dom"
 
 export const UserContext = createContext({});
 
 export const UserProvider = ({children}) =>{
     const [user , setUser] = useState(null)
+
+    useEffect(()=>{
+        const renderUser = async ()=>{
+            const token = localStorage.getItem("@TOKEN")
+            const userId = localStorage.getItem("@USERID")
+
+            if(!token){
+                return
+            }
+            const res = await Api.get(`/users/${userId}`,{
+                headers: {
+                  Authorization: `Bearer ${token}`
+                }
+            }); 
+            setUser(res.data)
+        }
+        renderUser()
+    },[])
 
     const navigate = useNavigate()
 

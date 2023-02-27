@@ -1,13 +1,37 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { Api } from "../Api/axios";
-import {toast} from 'react-toastify';
+import {toast} from "react-toastify";
+import { UserContext } from "./UseContext";
 
-export const TechContext = createContext({});
+
+export const TechContext = createContext();
 
 export const TechProvider = ({children}) =>{
+    const {user} = useContext(UserContext)
+    
     const [tech , setTech] = useState([])
-    const [list, setlist] = useState(true)
-    const [techId, setTechId] = useState("")
+    const [card , setCard] = useState({})
+
+
+    useEffect(()=>{
+        setTech(user.techs)
+
+    },[])
+    
+    const techApi = async () =>{
+        const token = localStorage.getItem("@TOKEN")
+        const Id = localStorage.getItem("@USERID")
+        try {
+            const res = await Api.get(`users/${Id}`,{
+                headers: {
+                  Authorization: `Bearer ${token}`
+                }
+              }); 
+            setTech(res.data.techs)
+        } catch (error) {
+            console.log(error) 
+        }
+    }
 
     const techResgister = async (formData) =>{
         const token = localStorage.getItem("@TOKEN")
@@ -17,27 +41,33 @@ export const TechProvider = ({children}) =>{
                   Authorization: `Bearer ${token}`
                 }
               }); 
-            // setTech([tech , res.data])
-            setTech(res.data)
-            setTechId(res.data.id)
+            setTech([...tech , res.data])
             toast("Tecnologia cadastrada com sucesso!")
-            setlist(false)
         } catch (error) {
             console.log(error)
             toast("Erro no cadastro")    
         }
     }
     
-    const techUpdade = async (formData) =>{
+    const techUpdade = async (formData, card) =>{
+        console.log(formData)
         const token = localStorage.getItem("@TOKEN")
         try {
-            const res = await Api.put(`users/techs/${techId} `, formData,{
+            const res = await Api.put(`users/techs/${card.id} `, formData,{
                 headers: {
                   Authorization: `Bearer ${token}`
                 }
               });
               toast("Tecnologia atualizada com sucesso!")
-              setTech(res.data)
+               const index = tech.findIndex(element =>{
+                return(
+                    element.id == card.id
+                )
+              })
+              tech[index] = {
+                ...card , formData
+              }
+              setTech(tech)
         } catch (error) {
             console.log(error)
             toast("Erro na atualização")    
@@ -47,16 +77,13 @@ export const TechProvider = ({children}) =>{
     const techDelete = async ()=>{
         const token = localStorage.getItem("@TOKEN")
         try {
-            const res = await Api.delete(`users/techs/${techId} `,{
+            const res = await Api.delete(`users/techs/${card.id} `,{
                 headers: {
                   Authorization: `Bearer ${token}`
                 }
               });
               toast("Tecnologia deletada com sucesso!")
-              setTech(res.data)
-              if(tech){
-                setlist(true)
-              }
+              setTech([...tech, res.data])
         } catch (error) {
             console.log(error)
             toast("Erro no delete")    
@@ -64,7 +91,7 @@ export const TechProvider = ({children}) =>{
 
     }        
     return(
-        <TechContext.Provider value={{techResgister, tech, setTech , list, techUpdade, techDelete}}>
+        <TechContext.Provider value={{techResgister, tech, setTech , techUpdade, techDelete, setCard, card, techApi }}>
             {children}
         </TechContext.Provider>
 

@@ -6,11 +6,11 @@ import {TechContext} from "../../Providers/TechContext"
 import { useContext } from "react";
 
 export function ModalUpdade(){
-    
-    const {tech, techUpdade, techDelete} = useContext(TechContext)
+
+    const {card, techUpdade, techDelete} = useContext(TechContext)
 
     const closeModal = ()=>{
-        ModalUpdate.close()
+        ModalUpdateId.close()
     }
     
     const {register , handleSubmit, formState:{errors}, reset} = useForm({
@@ -18,17 +18,19 @@ export function ModalUpdade(){
     })
   
     const submit =(formData)=>{
-        techUpdade(formData)
+        console.log(formData)
+        techUpdade(formData, card)
         reset()
-        ModalUpdate.close()
-    }
+        ModalUpdateId.close()
+    } 
     const deleteButton = ()=>{
         techDelete()
         reset()
-        ModalUpdade.close()
+        ModalUpdateId.close()
     }
+
     return(
-        <DialogModal id="ModalUpdate">
+        <DialogModal id="ModalUpdateId">
             <ConteinerModal>
                 <header>
                     <h3>Tecnologia Detalhes</h3>
@@ -37,11 +39,10 @@ export function ModalUpdade(){
                 <div>
                     <form onSubmit={handleSubmit(submit)}>
                         <label htmlFor="title">Nome do Projeto</label>
-                        <input type="text" id="title" placeholder={tech.title} {...register("title")} />
-                        <SpanVerifi>{errors.title && errors.title.message}</SpanVerifi>
+                        <input type="text" id="title" value={card.title}  disabled />
                         <label htmlFor="status">Status</label>
                         <select id="status" {...register("status")}>
-                            <option value="">{tech.status}</option>
+                            <option value="">{card.status}</option>
                             <option value="Iniciante">Iniciante</option>
                             <option value="Intermediário">Intermediário</option>
                             <option value="Avançado">Avançado</option>

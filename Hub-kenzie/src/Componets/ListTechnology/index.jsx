@@ -1,23 +1,35 @@
 import PlusHub from "../../assets/Plus.png"
 import { DivTecnologia } from "./styled"
-import { Modal } from "../Modal"
-import { useContext } from "react"
+import { ModalRegister } from "../ModalRegister"
+import { useContext, useEffect, useState } from "react"
 import { TechContext } from "../../Providers/TechContext"
 import { UlList } from "./styled"
 import { ModalUpdade } from "../ModalUpdate"
 
 export function ListTechnology(){
-    
+    const [list, setList] = useState(true) 
 
-    const {tech, list} = useContext(TechContext)
+    const {tech, setCard, techApi} = useContext(TechContext)
+
+    useEffect(()=>{
+        techApi()
+        console.log(tech)
+        if(tech.length > 0){
+            setList(false)
+        }else{
+            setList(true)
+        }
+    },[tech])
+
 
     const renderModal = () =>{
-        ModalRegister.showModal()
+        ModalRegisterId.showModal()
     }
-    const renderModalUpdade = ()=>{
-        ModalUpdate.showModal()
+    const renderModalUpdade = (element)=>{
+        setCard(element)
+        ModalUpdateId.showModal()
     }
-  
+    console.log(tech)
     return(
         <div>         
             <DivTecnologia>
@@ -29,23 +41,20 @@ export function ListTechnology(){
                 <div></div>
                 :
             <UlList>
-                
-                    <li onClick={renderModalUpdade}>
-                        <h3>{tech.title}</h3>
-                        <span>{tech.status}</span>
-                    </li> 
-                    
-                    {/* // tech.map(element=>{
-                    //     <li>
-                    //         <h3>{element.title}</h3>
-                    //         <span>{element.status}</span>
-                    //     </li>
-                    // })
-                    }) */}
+                { 
+                    tech.map(element=>{
+                        return(
+                            <li onClick={()=> renderModalUpdade(element)} key={element.id} id={element.id}>
+                                <h3>{element.title}</h3>
+                                <span>{element.status}</span>
+                            </li>
+                        )
+                    })
+                }
             </UlList>
             }
-            <Modal/>
-            <ModalUpdade/>
+            <ModalRegister/>
+            <ModalUpdade />
         </div>
     )
 }
